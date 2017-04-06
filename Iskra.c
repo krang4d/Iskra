@@ -16,10 +16,10 @@ int writeBuffer(int TRK_No, byte CMD, llong Price, llong Volume, int Status)
     buff.STX = 0x02U;
     buff.Price[0] = ((byte*)&Price)[0];
     buff.Price[1] = ((byte*)&Price)[1];
-    buff.Price[2] = ((byte*)&Price)[1];
-    buff.Price[3] = ((byte*)&Price)[1];
-    buff.Price[4] = ((byte*)&Price)[1];
-    buff.Price[5] = ((byte*)&Price)[1];
+    buff.Price[2] = ((byte*)&Price)[2];
+    buff.Price[3] = ((byte*)&Price)[3];
+    buff.Price[4] = ((byte*)&Price)[4];
+    buff.Price[5] = ((byte*)&Price)[5];
 
     buff.Volume[0] = ((byte*)&Volume)[0];
     buff.Volume[1] = ((byte*)&Volume)[1];
@@ -42,10 +42,10 @@ int writeBuffer(int TRK_No, byte CMD, llong Price, llong Volume, int Status)
 
     for(int i =0;  i < (sizeof(Buffer_TypeDef)/sizeof(byte)); i++)
     {
-        printf("%X\n", ((byte*)&buff)[i]);
+        //printf("%X\n", ((byte*)&buff)[i]);
         // write((byte*)&buff)[i]) пишем в порт по 8 бит данных
     }
 
-    printf("sizeof(23) = %d\n", sizeof(llong));
+    //printf("sizeof(23) = %d\n", sizeof(llong));
     return 0;
 }
