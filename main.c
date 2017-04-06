@@ -3,11 +3,11 @@
 
 int main()
 {
-    byte TRK_No = 1;
-    byte CMD = 1;
-    byte Price = 1;
-    byte Volume = 1;
-    byte Code = 1;
-    writeBuffer(&TRK_No, CMD, &Price, &Volume, &Code);
+    int TRK_No = 1;
+    unsigned char CMD = 2;
+    long long Price = 3;
+    long long Volume = 4;
+    int Code = 5;
+    writeBuffer(TRK_No, CMD, Price, Volume, Code);
     return 0;
 }

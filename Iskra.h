@@ -1,4 +1,5 @@
 typedef unsigned char byte;
+typedef unsigned long long llong;
 
 #define SHOT    (0x31U) /*Задание дозы налива для ТРК и установка готовности ТРК к пуску*/
 #define SET     (0x32U) /*Установка параметров ТРК*/
@@ -28,6 +29,6 @@ typedef struct
     byte CRC;               /*Контрольная сумма*/
 } Buffer_TypeDef;
 
-byte CheckSumma(byte* TRK_No, byte CMD, byte STX, byte* Price, byte* Volume, byte* Status, byte ETX);
+byte CheckSumma(byte TRK_No, byte CMD, byte STX, byte Price, byte Volume, byte Status, byte ETX);
 //int writeBuff(Buffer_TypeDef _buff);
-int writeBuff(byte* TRK_No, byte CMD, byte* Price, byte* Volume, byte *Code);
+int writeBuff(int TRK_No, byte CMD, llong Price, llong Volume, int Code);
