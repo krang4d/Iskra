@@ -1,3 +1,4 @@
+#include <stdio.h>
 typedef unsigned char byte;
 
 //Перечень команд управления (HEX)
@@ -33,6 +34,6 @@ void setCMD(Buffer_TypeDef *buff, int cmd);
 void setPrice(Buffer_TypeDef *buff, int price);
 void setVolume(Buffer_TypeDef *buff, int valume);
 void setStatus(Buffer_TypeDef *buff, int status);
-void setCRC(Buffer_TypeDef *buff);                                      //Подсчет  байта контрольной суммы сообщения
+byte setCRC(Buffer_TypeDef _buff);                                      //Подсчет  байта контрольной суммы сообщения
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Code); //Функцию отправки данных от ККМ в контроллер ТРК.
-void sendBuffer(Buffer_TypeDef _buff);
+void sendBuffer(Buffer_TypeDef *buff);

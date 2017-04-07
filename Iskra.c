@@ -2,8 +2,8 @@
 
 void setCMD(Buffer_TypeDef *buff, int cmd){
     switch(cmd % 16){
-        case 0 : buff->CMD = SHOT; break;
-        case 1 : buff->CMD = '1'; break;
+        case 0 : buff->CMD = '0'; break;
+        case 1 : buff->CMD = SHOT; break;
         case 2 : buff->CMD = SET; break;
         case 3 : buff->CMD = '3'; break;
         case 4 : buff->CMD = TEST; break;
@@ -22,7 +22,7 @@ void setCMD(Buffer_TypeDef *buff, int cmd){
 
 void setStatus(Buffer_TypeDef *buff, int status){
     int i = 0;
-    while ((status >= 15) && (i < 4))
+    while ((status > 0) && (i < 4))
         {
         switch(status % 16){
             case 0 : buff->Status[i] = '0'; break;
@@ -40,16 +40,17 @@ void setStatus(Buffer_TypeDef *buff, int status){
             case 12 : buff->Status[i] = 'C'; break;
             case 13 : buff->Status[i] = 'D'; break;
             case 14 : buff->Status[i] = 'E'; break;
-            case 15 : buff->Status[i] = 'F'; break;}
+            case 15 : buff->Status[i] = 'F'; break;
+			}
+		status = status / 16; i++;
         }
-    status = status - (status / 16); i++;
 }
 
 void setTRK_No(Buffer_TypeDef *buff, int trk_no){
     int i = 0;
-    while ((trk_no >= 15) && (i < 2))
+    while ((trk_no > 0) && (i < 2))
         {
-        switch(trk_no % 14){
+        switch(trk_no % 16){
             case 0 : buff->TRK_No[i] = '0'; break;
             case 1 : buff->TRK_No[i] = '1'; break;
             case 2 : buff->TRK_No[i] = '2'; break;
@@ -65,14 +66,15 @@ void setTRK_No(Buffer_TypeDef *buff, int trk_no){
             case 12 : buff->TRK_No[i] = 'C'; break;
             case 13 : buff->TRK_No[i] = 'D'; break;
             case 14 : buff->TRK_No[i] = 'E'; break;
-            case 15 : buff->TRK_No[i] = 'F'; break;}
+            case 15 : buff->TRK_No[i] = 'F'; break;
+			}
+		trk_no = trk_no / 16; i++;
         }
-    trk_no = trk_no - (trk_no / 16); i++;
 }
 
 void setPrice(Buffer_TypeDef *buff, int price){
     int i = 0;
-    while ((price >= 9) && (i < 6)){
+    while ((price > 0) && (i < 6)){
         switch(price % 10){
             case 0 : buff->Price[i] = '0'; break;
             case 1 : buff->Price[i] = '1'; break;
@@ -83,15 +85,16 @@ void setPrice(Buffer_TypeDef *buff, int price){
             case 6 : buff->Price[i] = '6'; break;
             case 7 : buff->Price[i] = '7'; break;
             case 8 : buff->Price[i] = '8'; break;
-            case 9 : buff->Price[i] = '9'; break;}
+            case 9 : buff->Price[i] = '9'; break;
+			}
+		price = price / 10; i++;
         }
-    price = price - (price / 10); i++;
 }
 
 void setVolume(Buffer_TypeDef *buff, int valume)
 {
     int i = 0;
-    while ((valume >= 9) && (i < 6)){
+    while ((valume > 0) && (i < 6)){
         switch(valume % 10){
             case 0 : buff->Volume[i] = '0'; break;
             case 1 : buff->Volume[i] = '1'; break;
@@ -102,36 +105,43 @@ void setVolume(Buffer_TypeDef *buff, int valume)
             case 6 : buff->Volume[i] = '6'; break;
             case 7 : buff->Volume[i] = '7'; break;
             case 8 : buff->Volume[i] = '8'; break;
-            case 9 : buff->Volume[i] = '9'; break;}
+            case 9 : buff->Volume[i] = '9'; break;
+			}
+		valume = valume / 10; i++;
         }
-    valume = valume - (valume / 10); i++;
 }
 
-void setCRC(Buffer_TypeDef *buff){
-    for(unsigned int i=1; i < ((sizeof(Buffer_TypeDef)/sizeof(byte))-3); i++){
-       ((byte*)buff)[i] ^= ((byte*)buff)[i+1];
+byte setCRC(Buffer_TypeDef _buff){
+    unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
+    for(unsigned int i=2; i < (n-2); i++){
+       ((byte*)&_buff)[1] ^= ((byte*)&_buff)[i];
     }
+    return ((byte*)&_buff)[n-1];
 }
 
- void sendBuffer(Buffer_TypeDef _buff){
-    for(unsigned int i =0;  i < (sizeof(Buffer_TypeDef)/sizeof(byte)); i++){
+ void sendBuffer(Buffer_TypeDef *buff){
+    unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
+    byte* px;
+    px = (byte*)buff;
+    for(unsigned int i =0;  i < n; i++){
         //write((byte*)&_buff)[i]) пишем в порт по 8 бит данных
+        printf("Byte[%d] = %d\n", i, px[i]);
     }
 }
 
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Status){
 
-    Buffer_TypeDef buff;
+    Buffer_TypeDef buff = {0};
     buff.SOH = 0x01U;
     setTRK_No(&buff, TRK_No);
     setCMD(&buff, CMD);
     buff.STX = 0x02U;
-    setVolume(&buff, Volume);
     setPrice(&buff, Price);
+    setVolume(&buff, Volume);
     setStatus(&buff, Status);
     buff.ETX = 0x03U;
-    setCRC(&buff);
-    sendBuffer(buff);
+    buff.CRC = setCRC(buff);
+    sendBuffer(&buff);
 
 //    printf("SOH = %X\nTRK_No[0] = %X\nTRK_No[1] = %X\nCMD = %X\nSTX = %X\nPrice = %X\nVolume = %X\nStatus = %X\nETX = %X\nCRC = %X\n",
 //    buff.SOH, buff.TRK_No[0], buff.TRK_No[1], buff.CMD, buff.STX, buff.Price, buff.Volume, buff.Status, buff.ETX, buff.CRC);
