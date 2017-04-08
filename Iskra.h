@@ -1,3 +1,6 @@
+#ifndef ISKRA_H
+#define ISKRA_H
+
 typedef unsigned char byte;
 
 //Перечень команд управления (HEX)
@@ -29,3 +32,5 @@ void setStatus(Buffer_TypeDef *buff, int status);
 byte setCRC(Buffer_TypeDef buff);                                      //Подсчет  байта контрольной суммы сообщения
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Code); //Функцию отправки данных от ККМ в контроллер ТРК.
 void sendBuffer(Buffer_TypeDef *buff);
+
+#endif // ISKRA_H
