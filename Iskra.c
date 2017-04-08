@@ -125,18 +125,8 @@ byte setCRC(Buffer_TypeDef buff){
     px = (byte*)buff;
     for(unsigned int i =0;  i < n; i++){
         //_write(px[i]) <-- функции для предачи через RS-232 8 битов данных
-        printf("Byte[%d] = %d\n", i, px[i]);
     }
 }
-
-//void reversMas(byte* mas, int n){
-//    byte glass;
-//    for(int i=0; i<n; i++){
-//        glass = mas[i];
-//        mas[i] = mas[n-1-i];
-//        mas[n-1-i] = glass;
-//    }
-//}
 
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Status){
 

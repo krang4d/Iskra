@@ -1,4 +1,3 @@
-#include <stdio.h>
 typedef unsigned char byte;
 
 //Перечень команд управления (HEX)
@@ -9,13 +8,6 @@ typedef unsigned char byte;
 #define STOP    (0x36U)     //Останов ТРК
 #define RESET   (0x37U)     //Сброс состояния ТРК
 #define FULL    (0x39U)     //Заправка до полного бака
-
-//typedef struct
-//{
-//    byte Error[2];         /*Код ошибки протокола*/
-//    byte Code[2];          /*Код состояния ТРК*/
-//} ErrorStatus;
-
 
 typedef struct{
     byte SOH;               //Маркер начала сообщения
@@ -37,4 +29,3 @@ void setStatus(Buffer_TypeDef *buff, int status);
 byte setCRC(Buffer_TypeDef buff);                                      //Подсчет  байта контрольной суммы сообщения
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Code); //Функцию отправки данных от ККМ в контроллер ТРК.
 void sendBuffer(Buffer_TypeDef *buff);
-void reversMas(byte* mas, int n);

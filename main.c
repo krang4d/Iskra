@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include <Iskra.h>
 
 int main()
 {
-    int TRK_No = 1;
+    int TRK_No = 0x01;
     unsigned char CMD = SHOT;
     int Price = 30;
     int Volume = 20;
