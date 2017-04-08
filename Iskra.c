@@ -42,7 +42,7 @@ void setStatus(Buffer_TypeDef *buff, int status){
             case 14 : buff->Status[i] = 'E'; break;
             case 15 : buff->Status[i] = 'F'; break;
 			}
-		status = status / 16; i++;
+        status = status / 16; i++;
         }
 }
 
@@ -68,7 +68,7 @@ void setTRK_No(Buffer_TypeDef *buff, int trk_no){
             case 14 : buff->TRK_No[i] = 'E'; break;
             case 15 : buff->TRK_No[i] = 'F'; break;
 			}
-		trk_no = trk_no / 16; i++;
+        trk_no = trk_no / 16; i++;
         }
 }
 
@@ -87,7 +87,7 @@ void setPrice(Buffer_TypeDef *buff, int price){
             case 8 : buff->Price[i] = '8'; break;
             case 9 : buff->Price[i] = '9'; break;
 			}
-		price = price / 10; i++;
+        price = price / 10; i++;
         }
 }
 
@@ -107,16 +107,16 @@ void setVolume(Buffer_TypeDef *buff, int valume)
             case 8 : buff->Volume[i] = '8'; break;
             case 9 : buff->Volume[i] = '9'; break;
 			}
-		valume = valume / 10; i++;
+        valume = valume / 10; i++;
         }
 }
 
-byte setCRC(Buffer_TypeDef _buff){
+byte setCRC(Buffer_TypeDef buff){
     unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
     for(unsigned int i=2; i < (n-2); i++){
-       ((byte*)&_buff)[1] ^= ((byte*)&_buff)[i];
+       ((byte*)&buff)[1] ^= ((byte*)&buff)[i];
     }
-    return ((byte*)&_buff)[n-1];
+    return ((byte*)&buff)[1];
 }
 
  void sendBuffer(Buffer_TypeDef *buff){
@@ -124,10 +124,19 @@ byte setCRC(Buffer_TypeDef _buff){
     byte* px;
     px = (byte*)buff;
     for(unsigned int i =0;  i < n; i++){
-        //write((byte*)&_buff)[i]) пишем в порт по 8 бит данных
+        //_write(px[i]) <-- функции для предачи через RS-232 8 битов данных
         printf("Byte[%d] = %d\n", i, px[i]);
     }
 }
+
+//void reversMas(byte* mas, int n){
+//    byte glass;
+//    for(int i=0; i<n; i++){
+//        glass = mas[i];
+//        mas[i] = mas[n-1-i];
+//        mas[n-1-i] = glass;
+//    }
+//}
 
 int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Status){
 
@@ -142,9 +151,5 @@ int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Status){
     buff.ETX = 0x03U;
     buff.CRC = setCRC(buff);
     sendBuffer(&buff);
-
-//    printf("SOH = %X\nTRK_No[0] = %X\nTRK_No[1] = %X\nCMD = %X\nSTX = %X\nPrice = %X\nVolume = %X\nStatus = %X\nETX = %X\nCRC = %X\n",
-//    buff.SOH, buff.TRK_No[0], buff.TRK_No[1], buff.CMD, buff.STX, buff.Price, buff.Volume, buff.Status, buff.ETX, buff.CRC);
-//    printf("sizeof(23) = %d\n", sizeof(llong));
     return 0;
 }
