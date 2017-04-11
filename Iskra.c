@@ -21,9 +21,7 @@ void setCMD(Buffer_TypeDef *buff, int cmd){
 }
 
 void setStatus(Buffer_TypeDef *buff, int status){
-    int i = 0;
-    while ((status > 0) && (i < 4))
-        {
+    for(int i = 0; i < 4; i++){
         switch(status % 16){
             case 0 : buff->Status[i] = '0'; break;
             case 1 : buff->Status[i] = '1'; break;
@@ -41,15 +39,13 @@ void setStatus(Buffer_TypeDef *buff, int status){
             case 13 : buff->Status[i] = 'D'; break;
             case 14 : buff->Status[i] = 'E'; break;
             case 15 : buff->Status[i] = 'F'; break;
-			}
-        status = status / 16; i++;
         }
+        status = status / 16;
+    }
 }
 
 void setTRK_No(Buffer_TypeDef *buff, int trk_no){
-    int i = 0;
-    while ((trk_no > 0) && (i < 2))
-        {
+    for(int i = 0; i < 2; i++){
         switch(trk_no % 16){
             case 0 : buff->TRK_No[i] = '0'; break;
             case 1 : buff->TRK_No[i] = '1'; break;
@@ -67,14 +63,14 @@ void setTRK_No(Buffer_TypeDef *buff, int trk_no){
             case 13 : buff->TRK_No[i] = 'D'; break;
             case 14 : buff->TRK_No[i] = 'E'; break;
             case 15 : buff->TRK_No[i] = 'F'; break;
-			}
-        trk_no = trk_no / 16; i++;
+
         }
+        trk_no = trk_no / 16;
+    }
 }
 
 void setPrice(Buffer_TypeDef *buff, int price){
-    int i = 0;
-    while ((price > 0) && (i < 6)){
+    for(int i = 0; i < 6; i++){
         switch(price % 10){
             case 0 : buff->Price[i] = '0'; break;
             case 1 : buff->Price[i] = '1'; break;
@@ -86,15 +82,14 @@ void setPrice(Buffer_TypeDef *buff, int price){
             case 7 : buff->Price[i] = '7'; break;
             case 8 : buff->Price[i] = '8'; break;
             case 9 : buff->Price[i] = '9'; break;
-			}
-        price = price / 10; i++;
         }
+        price = price / 10;
+    }
 }
 
 void setVolume(Buffer_TypeDef *buff, int valume)
 {
-    int i = 0;
-    while ((valume > 0) && (i < 6)){
+    for(int i = 0; i < 6; i++){
         switch(valume % 10){
             case 0 : buff->Volume[i] = '0'; break;
             case 1 : buff->Volume[i] = '1'; break;
@@ -106,9 +101,9 @@ void setVolume(Buffer_TypeDef *buff, int valume)
             case 7 : buff->Volume[i] = '7'; break;
             case 8 : buff->Volume[i] = '8'; break;
             case 9 : buff->Volume[i] = '9'; break;
-			}
-        valume = valume / 10; i++;
         }
+        valume = valume / 10;
+    }
 }
 
 byte setCRC(Buffer_TypeDef buff){
@@ -125,6 +120,7 @@ byte setCRC(Buffer_TypeDef buff){
     px = (byte*)buff;
     for(unsigned int i =0;  i < n; i++){
         //_write(px[i]) <-- функции для предачи через RS-232 8 битов данных
+        printf("byte[%i]: %X\n", i, px[i]);
     }
 }
 

@@ -1,6 +1,8 @@
 #ifndef ISKRA_H
 #define ISKRA_H
 
+#include "stdio.h"
+
 typedef unsigned char byte;
 
 //Перечень команд управления (HEX)
