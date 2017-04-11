@@ -5,7 +5,7 @@ typedef unsigned char byte;
 
 //Перечень команд управления (HEX)
 #define SHOT    (0x31U)     //Задание дозы налива для ТРК и установка готовности ТРК к пуску
-#define SET     (0x32U)     //Установка параметров ТРК
+#define SET     (0x33U)     //Установка параметров ТРК
 #define TEST    (0x34U)     //Опрос состояния ТРК
 #define START   (0x35U)     //Запуск ТРК
 #define STOP    (0x36U)     //Останов ТРК

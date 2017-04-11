@@ -4,8 +4,8 @@ void setCMD(Buffer_TypeDef *buff, int cmd){
     switch(cmd % 16){
         case 0 : buff->CMD = '0'; break;
         case 1 : buff->CMD = SHOT; break;
-        case 2 : buff->CMD = SET; break;
-        case 3 : buff->CMD = '3'; break;
+        case 2 : buff->CMD = '2'; break;
+        case 3 : buff->CMD = SET; break;
         case 4 : buff->CMD = TEST; break;
         case 5 : buff->CMD = START; break;
         case 6 : buff->CMD = STOP; break;
