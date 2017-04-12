@@ -24,16 +24,16 @@ typedef struct{
     byte CRC;               //Контрольная сумма
 } Buffer_TypeDef;
 
-void setTRK_No(Buffer_TypeDef *buff, int trk_no);
-void setCMD(Buffer_TypeDef *buff, int cmd);
-void setPrice(Buffer_TypeDef *buff, int price);
-void setVolume(Buffer_TypeDef *buff, int valume);
-void setStatus(Buffer_TypeDef *buff, int status);
-byte setCRC(Buffer_TypeDef buff);                                      //Подсчет  байта контрольной суммы сообщения
-int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Code, int (*_write)(unsigned char)); //Функцию отправки данных от ККМ в контроллер ТРК.
+void setTRK_No(Buffer_TypeDef *buff, int *trk_no);
+void setCMD(Buffer_TypeDef *buff, int *cmd);
+void setPrice(Buffer_TypeDef *buff, int *price);
+void setVolume(Buffer_TypeDef *buff, int *valume);
+void setStatus(Buffer_TypeDef *buff, int *status);
+void setCRC(Buffer_TypeDef *buff);	//Подсчет  байта контрольной суммы сообщения
+int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Code, int (*_write)(unsigned char)); //Функцию отправки данных от ККМ в контроллер ТРК.
 void sendBuffer(Buffer_TypeDef *buff, int (*_write)(unsigned char));
 
-byte toHex(int i);
-byte toDec(int i);
+byte toHex(int *i);
+byte toDec(int *i);
 
 #endif // ISKRA_H
