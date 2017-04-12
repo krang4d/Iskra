@@ -7,21 +7,21 @@ void setCMD(Buffer_TypeDef *buff, int cmd){
 void setStatus(Buffer_TypeDef *buff, int status){
     for(int i = 0; i < 4; i++){
         buff->Status[i] = toHex(status);
-        status = status / 16;
+        status /= 16;
     }
 }
 
 void setTRK_No(Buffer_TypeDef *buff, int trk_no){
     for(int i = 0; i < 2; i++){
         buff->TRK_No[i] = toHex(trk_no);
-        trk_no = trk_no / 16;
+        trk_no /= 16;
     }
 }
 
 void setPrice(Buffer_TypeDef *buff, int price){
     for(int i = 0; i < 6; i++){
         buff->Price[i] = toDec(price);
-        price = price / 10;
+        price /= 10;
     }
 }
 
@@ -29,16 +29,15 @@ void setVolume(Buffer_TypeDef *buff, int valume)
 {
     for(int i = 0; i < 6; i++){
         buff->Volume[i] = toDec(valume);
-        valume = valume / 10;
+        valume /=  10;
     }
 }
 
-byte setCRC(Buffer_TypeDef buff){
-    unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
-    for(unsigned int i=2; i < (n-2); i++){
-       ((byte*)&buff)[1] ^= ((byte*)&buff)[i];
+void setCRC(Buffer_TypeDef *buff){
+    byte *b = (byte*)buff;
+    for(int i=1; i < 22; i++){
+       b[22] ^= b[i];
     }
-    return ((byte*)&buff)[1];
 }
 
  void sendBuffer(Buffer_TypeDef *buff,int (*_write)(unsigned char)){
@@ -61,7 +60,7 @@ int writeBuffer(int TRK_No, byte CMD, int Price, int Volume, int Status, int (*_
     setVolume(&buff, Volume);
     setStatus(&buff, Status);
     buff.ETX = 0x03U;
-    buff.CRC = setCRC(buff);
+    setCRC(&buff);
     sendBuffer(&buff, _write);
     return 0;
 }
