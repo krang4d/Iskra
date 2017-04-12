@@ -1,18 +1,17 @@
 #include <Iskra.h>
-
 #include "stdio.h"
 
-int (*fw)(unsigned char);
+int (*fw)(char);
 
-int write(unsigned char x){
-        return printf("%X\n", x);
+int write(char x){
+        return x; //<-- функции для предачи через RS-232 8 битов данных
 }
 
 int main()
 {
     fw = write;
     int TRK_No = 0x01;
-    int CMD = SHOT;
+    int CMD = 0x39;
     int Price = 1200;
     int Volume = 200;
     int Status = 0x0000;

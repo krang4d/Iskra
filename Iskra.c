@@ -34,25 +34,20 @@ void setVolume(Buffer_TypeDef *buff, int *valume)
 }
 
 void setCRC(Buffer_TypeDef *buff){
-//    unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
-//    for(unsigned int i=2; i < (n-2); i++){
-//       ((byte*)&buff)[1] ^= ((byte*)&buff)[i];
     byte* b = (byte*)buff;
     b[22]=0; for (int i=1; i<22; i++) b[22]^= b[i];
-//    }
-    //return ((byte*)&buff)[1];
 }
 
-void sendBuffer(Buffer_TypeDef *buff,int (*_write)(unsigned char)){
-    unsigned int n = sizeof(Buffer_TypeDef)/sizeof(byte);
+void sendBuffer(Buffer_TypeDef *buff,int (*_write)(char)){
+    int n = sizeof(Buffer_TypeDef)/sizeof(byte);
     byte* px;
     px = (byte*)buff;
-    for(unsigned int i=0;  i < n; i++){
-        _write(px[i]); //<-- функции для предачи через RS-232 8 битов данных
+    for(int i=0;  i < n; i++){
+        _write(px[i]);
     }
 }
 
-int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Status, int (*_write)(unsigned char ch)){
+int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_write)(char)){
     Buffer_TypeDef buff = {0};
     buff.SOH = 0x01U;
     setTRK_No(&buff, &TRK_No);
