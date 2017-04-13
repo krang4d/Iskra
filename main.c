@@ -4,7 +4,7 @@
 int (*fw)(char);
 
 int write(char x){
-    return printf("%X ", x); //<-- функции для предачи через RS-232 8 битов данных
+    return x; //<-- функции для предачи через RS-232 8 битов данных
 }
 
 int main()
@@ -14,11 +14,8 @@ int main()
     int CMD = 0x39;
     int Price = 1200;
     int Volume = 200;
-    int Status = 0x0000;
-    printf("writeBuffer():  ");
+    int Status = 0x4321;
     writeBuffer(TRK_No, CMD, Price, Volume, Status, fw);
-    printf("writeBuffer2(): ");
-    writeBuffer2(TRK_No, CMD, Price, Volume, Status, fw);
     return 0;
 }
 
