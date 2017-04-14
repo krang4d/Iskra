@@ -29,5 +29,5 @@ int writeBuffer2(int TRK_No, int CMD, int Price, int Volume, int Code, int (*_wr
 
 //byte toHex(int *i);
 //byte toDec(int *i);
-
+void sortBuff(Buffer_TypeDef *p, int s, int e);
 #endif // ISKRA_H

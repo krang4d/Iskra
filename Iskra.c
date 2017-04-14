@@ -1,5 +1,17 @@
 #include "Iskra.h"
 
+void sortBuff(Buffer_TypeDef *p, int s, int e){
+    e+=1;
+    byte *b, b1;
+    b = (byte*)p;
+    for(int i=0; i<(e-s)/2; i++)
+    {
+        b1 = b[s+i];
+        b[s+i]=b[e-1-i];
+        b[e-1-i] = b1;
+    }
+}
+
 byte toHex(int *i){
     switch((*i) % 16){
         case 0 : return '0';
@@ -45,18 +57,21 @@ void setStatus(Buffer_TypeDef *buff, int *status){
         buff->Status[i] = toHex(status);
         (*status) /= 16;
     }
+    sortBuff(buff, 17, 20);
 }
 void setTRK_No(Buffer_TypeDef *buff, int *trk_no){
     for(int i = 0; i < 2; i++){
         buff->TRK_No[i] = toHex(trk_no);
         (*trk_no) /= 16;
     }
+    sortBuff(buff, 1, 2);
 }
 void setPrice(Buffer_TypeDef *buff, int *price){
     for(int i = 0; i < 6; i++){
         buff->Price[i] = toDec(price);
         (*price) /= 10;
     }
+    sortBuff(buff, 5, 10);
 }
 void setVolume(Buffer_TypeDef *buff, int *valume)
 {
@@ -64,6 +79,7 @@ void setVolume(Buffer_TypeDef *buff, int *valume)
         buff->Volume[i] = toDec(valume);
         (*valume) /= 10;
     }
+    sortBuff(buff, 11, 16);
 }
 void setCRC(Buffer_TypeDef *buff){
     byte* b = (byte*)buff;
@@ -91,7 +107,7 @@ int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_wr
     sendBuffer(&buff, _write);
     return 0;
 }
- void writeBuffer2(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_write)(char)){
+ int writeBuffer2(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_write)(char)){
      for(int i = 0; i < 23; i++)
      {
          if(i==0) {buff[i] = 0x01U; continue;}
@@ -107,4 +123,5 @@ int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_wr
      for(unsigned int i=0;  i < sizeof(buff); i++){
          _write(buff[i]);
     }
+    return 0;
 }

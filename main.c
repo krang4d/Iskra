@@ -13,11 +13,11 @@ int main()
     int TRK_No = 0x01;
     int CMD = 0x39;
     int Price = 1200;
-    int Volume = 200;
-    int Status = 0x0000;
+    int Volume = 4500;
+    int Status = 0x0;
     printf("writeBuffer():  ");
     writeBuffer(TRK_No, CMD, Price, Volume, Status, fw);
-    printf("writeBuffer2(): ");
+    printf("\nwriteBuffer2(): ");
     writeBuffer2(TRK_No, CMD, Price, Volume, Status, fw);
     return 0;
 }
