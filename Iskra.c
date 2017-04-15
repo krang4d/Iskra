@@ -107,21 +107,3 @@ int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_wr
     sendBuffer(&buff, _write);
     return 0;
 }
- int writeBuffer2(int TRK_No, int CMD, int Price, int Volume, int Status, int(*_write)(char)){
-     for(int i = 0; i < 23; i++)
-     {
-         if(i==0) {buff[i] = 0x01U; continue;}
-         else if(i<3) {buff[i] = toHex(&TRK_No); TRK_No /= 16; continue;}
-         else if(i==3) {buff[i] = toHex(&CMD); continue;}
-         else if(i==4) {buff[i] = 0x02U; continue;}
-         else if(i<11) {buff[i] = toDec(&Price); Price /= 10; continue;}
-         else if(i<17) {buff[i] = toDec(&Volume); Volume /= 10; continue;}
-         else if(i<21) {buff[i] = toHex(&Status); Status /= 16; continue;}
-         else if(i==21) {buff[i] = 0x03U; continue;}
-         else if(i==22) {buff[22]=0; for (int i=1; i<22; i++) buff[22]^= buff[i]; continue;}
-     }
-     for(unsigned int i=0;  i < sizeof(buff); i++){
-         _write(buff[i]);
-    }
-    return 0;
-}

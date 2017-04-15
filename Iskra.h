@@ -15,19 +15,17 @@ typedef struct{
     byte CRC;               //Контрольная сумма
 } Buffer_TypeDef;
 
-char buff[23];
-
-//void setTRK_No(Buffer_TypeDef *buff, int *trk_no);
-//void setCMD(Buffer_TypeDef *buff, int *cmd);
-//void setPrice(Buffer_TypeDef *buff, int *price);
-//void setVolume(Buffer_TypeDef *buff, int *valume);
-//void setStatus(Buffer_TypeDef *buff, int *status);
-//void setCRC(Buffer_TypeDef *buff);	//Подсчет  байта контрольной суммы сообщения
 int writeBuffer(int TRK_No, int CMD, int Price, int Volume, int Code, int (*_write)(char)); //Функцию отправки данных от ККМ в контроллер ТРК.
-int writeBuffer2(int TRK_No, int CMD, int Price, int Volume, int Code, int (*_write)(char)); //Оптимизированная функцию отправки данных от ККМ в контроллер ТРК.
-//void sendBuffer(Buffer_TypeDef *buff, int (*_write)(char));
 
-//byte toHex(int *i);
-//byte toDec(int *i);
+void setTRK_No(Buffer_TypeDef *buff, int *trk_no);
+void setCMD(Buffer_TypeDef *buff, int *cmd);
+void setPrice(Buffer_TypeDef *buff, int *price);
+void setVolume(Buffer_TypeDef *buff, int *valume);
+void setStatus(Buffer_TypeDef *buff, int *status);
+void setCRC(Buffer_TypeDef *buff);	//Подсчет  байта контрольной суммы сообщения
+void sendBuffer(Buffer_TypeDef *buff, int (*_write)(char));
+
+byte toHex(int *i);
+byte toDec(int *i);
 void sortBuff(Buffer_TypeDef *p, int s, int e);
 #endif // ISKRA_H
